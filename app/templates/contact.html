@@ -1,0 +1,53 @@
+{% extends "base.html" %} {% block main %}
+<h1>Contact Form</h1>
+
+<hr />
+<p class="lead">
+    Fill this form to contact the site owners
+  </p>
+
+<form method="POST" action="/process-contact-form">
+  <div class="row">
+    <div class="col-md-5 col-sm-12">
+      <div class="my-5">
+        <div class="d-block my-4">
+          <b>{{form.name.label}}</b>
+        </div>
+        <div class="text-muted">{{form.name.description}}</div>
+        {{form.name(class_="form-control my-2")}}
+      </div>
+
+      <div class="my-5">
+        <div class="d-block my-4">
+          <b>{{form.email.label}} {{form.email.validator}}</b>
+        </div>
+        <div class="text-muted">{{form.email.description}}</div>
+        {{form.email(class_="form-control my-2")}}
+      </div>
+
+      <div class="my-5">
+        <div class="d-block my-4">
+          <b>{{form.subject.label}}</b>
+        </div>
+
+        <div class="text-muted">{{form.subject.description}}</div>
+        {{form.subject(class_="form-control my-2")}}
+      </div>
+
+      <div class="my-5">
+        <div class="d-block my-4">
+          <b>{{form.message.label}}</b>
+        </div>
+        <div class="text-muted">{{form.message.description}}</div>
+        {{form.message(class_="form-control my-2")}}
+      </div>
+    </div>
+  </div>
+
+  <div class="my-5">
+    <button class="btn btn-success px-4">Send</button>
+  </div>
+</form>
+
+
+{% endblock %}
