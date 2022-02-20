@@ -2,13 +2,21 @@
 <h1>Contact Form</h1>
 
 <hr />
-<p class="lead">
-    Fill this form to contact the site owners
-  </p>
+<p class="lead">Fill this form to contact the site owners</p>
 
-<form method="POST" action="/process-contact-form">
+{% if form.name.errors %}
+<ul class="errors">
+  {% for error in form.name.errors %}
+  <li>{{ error }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<form method="POST" action="/contact/">
   <div class="row">
     <div class="col-md-5 col-sm-12">
+      {{ form.csrf_token }}
+
       <div class="my-5">
         <div class="d-block my-4">
           <b>{{form.name.label}}</b>
@@ -19,7 +27,7 @@
 
       <div class="my-5">
         <div class="d-block my-4">
-          <b>{{form.email.label}} {{form.email.validator}}</b>
+          <b>{{form.email.label}}</b>
         </div>
         <div class="text-muted">{{form.email.description}}</div>
         {{form.email(class_="form-control my-2")}}
@@ -45,9 +53,8 @@
   </div>
 
   <div class="my-5">
-    <button class="btn btn-success px-4">Send</button>
+    <button type="submit" class="btn btn-success px-4">Send</button>
   </div>
 </form>
-
 
 {% endblock %}

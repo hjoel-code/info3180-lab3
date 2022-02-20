@@ -5,12 +5,11 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 
-from app import app
+from app import app, mail
 from flask import render_template, request, redirect, url_for, flash
 
 from app.forms import ContactForm
-
-
+from flask_mail import Message
 
 
 ###
@@ -28,10 +27,35 @@ def about():
     """Render the website's about page."""
     return render_template('about.html', name="Mary Jane")
 
-@app.route('/contact/')
+
+@app.route('/contact/', methods=['POST', 'GET'])
 def contact():
-    form = ContactForm()
-    return render_template("contact.html", form=form)
+    contactForm = ContactForm(request.form)
+    if (request.method == 'POST'):
+
+        if (contactForm.validate_on_submit()):
+
+            try:
+                form = request.form
+                msg = Message(form['subject'], sender=(
+                    form['name'], form['email']), recipients=["info3180.lab03@gmail.com"])
+                msg.body = form['message']
+                mail.send(msg)
+                flash(
+                    "Your message was sent. Thank you for contacting us " + form['name'])
+
+                return redirect(url_for('home'))
+            except Exception as err:
+                print(format(err))
+                flash("Something went wrong", category="error")
+                return render_template("contact.html", form=contactForm)
+
+        else:
+
+            flash(
+                "Something went wrong please confirm that you correctly completed the form", category="error")
+
+    return render_template("contact.html", form=contactForm)
 
 
 ###
